@@ -1,8 +1,7 @@
 # Proyecto-IE0624
 Reporsitorio para el proyecto del curso IE-0624
 
-markdown
-Copy code
+
 # Dispensador de Pastillas con Microcontroladores
 
 Este proyecto implementa un dispensador de pastillas utilizando el microcontrolador Arduino UNO. El código está diseñado para funcionar con un Arduino y utiliza diversas funciones para controlar la dispensación de pastillas, configurar la alarma y gestionar el tiempo.
