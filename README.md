@@ -43,5 +43,4 @@ El dispensador de pastillas dispensará pastillas y activará el buzzer cuando l
 
 
 ## Licencia
-
-Este proyecto está bajo la licencia [MIT](LICENSE).
+NA
