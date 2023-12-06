@@ -5,12 +5,12 @@ import json
 ser = serial.Serial("/dev/ttyACM0", 115200, timeout = 1) 
 print("Se ha conectado al puerto serial /dev/ttyACM0")
 
-client = mqtt.Client("STM32_JOSE_Y_DANNY")
+client = mqtt.Client("AGREGAR")
 
 server = "iot.eie.ucr.ac.cr"
 port = 1883
 topic = "v1/devices/me/telemetry"
-token = "6weqsemviee72ta8t788"
+token = "ysuyuy140yvasraycviv"
 
 client.username_pw_set(token)
 client.connect(server, port)
@@ -22,14 +22,10 @@ while True:
 	line = line.replace("\r", "").replace("\n", "")
 	line = line.split(",")
 	if len(line) == 4:
-		dictionary["X"] = line[0]
-		dictionary["Y"] = line[1]
-		dictionary["Z"] = line[2]
+		dictionary["alarma"] = line[0]
+		dictionary["alarma1"] = line[1]
+		dictionary["alatma2"] = line[2]
 		dictionary["Battery"] = line[3]
-		if float(line[3]) < 7:
-			dictionary["Low Battery"] = "Yes"
-		else:
-			dictionary["Low Battery"] = "No"
 		msg = json.dumps(dictionary)
 		print(msg)
 		client.publish(topic, msg)
