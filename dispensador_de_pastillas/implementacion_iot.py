@@ -1,31 +1,49 @@
 import serial
 import paho.mqtt.client as mqtt
 import json
+import re
+import sys
+import select
 
-ser = serial.Serial("/dev/ttyACM0", 115200, timeout = 1) 
-print("Se ha conectado al puerto serial /dev/ttyACM0")
+ser = serial.Serial("COM7", 115200, timeout = 1) 
+print("Se ha conectado al puerto serial COM7")
 
-client = mqtt.Client("AGREGAR")
-
+client = mqtt.Client()
 server = "iot.eie.ucr.ac.cr"
 port = 1883
 topic = "v1/devices/me/telemetry"
-token = "ysuyuy140yvasraycviv"
+token = "ysuyuy140yvasraycviv"  # Tu token real
+device_id = "68094000-93e3-11ee-9eb1-4f281083cad4"  # Tu Device ID
 
 client.username_pw_set(token)
 client.connect(server, port)
+client.loop_start()
 
-dictionary = dict()
+
+def on_publish(client, userdata, result):
+    print("data published to thingsboard")
+    pass
+
+client.on_publish = on_publish
 
 while True:
-	line = ser.readline().decode("utf-8")
-	line = line.replace("\r", "").replace("\n", "")
-	line = line.split(",")
-	if len(line) == 4:
-		dictionary["alarma"] = line[0]
-		dictionary["alarma1"] = line[1]
-		dictionary["alatma2"] = line[2]
-		dictionary["Battery"] = line[3]
-		msg = json.dumps(dictionary)
-		print(msg)
-		client.publish(topic, msg)
+    if ser.in_waiting > 0:
+        line = serial_port.readline().decode('utf-8').strip()
+        values = line.split("\t")  # Dividir los datos por tabulaciones
+
+        if line == "LED ON":
+            client.publish(topic, json.dumps({"LED_status": "on"}), 1)
+        elif line == "LED OFF":
+            client.publish(topic, json.dumps({"LED_status": "off"}), 1)
+        else:
+            # Si no es "LED ON" ni "LED OFF", podrías enviar los datos recibidos tal como están
+            client.publish(topic, json.dumps({"serial_data": line}), 1)
+
+
+        client.publish("v1/devices/me/telemetry", json.dumps(data), 1)
+        time.sleep(1)
+
+
+ser.close()
+client.loop_stop()
+client.disconnect()
